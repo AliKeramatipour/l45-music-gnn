@@ -2,7 +2,6 @@
 import mido
 import numpy as np
 import torch
-from piano_roll_visualizer import piano_roll
 
 # track number is set to be 1 assuming the track01 is for piano
 def get_midi_timesteps(midi,track_num=1):
@@ -38,6 +37,9 @@ def mid2arry(mid, track_num=1, min_msg_pct=0.1):
     ends = np.where(sums > 0)[0]
     return all_arys[min(ends): max(ends)]
 
+def convert2binary(arr):
+    return np.where(arr>0,1,0)
+
 def arry2mid(ary, tempo=500000):
     new_ary = np.concatenate([np.array([[0] * 128]), np.array(ary)], axis=0)
     mid_new = mido.MidiFile()
@@ -67,6 +69,7 @@ def arry2mid(ary, tempo=500000):
 
 
 if __name__ == '__main__':
+    from piano_roll_visualizer import piano_roll
     from pathlib import Path
     import os
     import time
