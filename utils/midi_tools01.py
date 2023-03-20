@@ -35,23 +35,29 @@ def midi_to_tensor_multi_tracks(midi, binary_velocity=False):
                 tensor[timesteps, msg.note] = 0
                 previous_note[msg.note] = timesteps
     return torch.from_numpy(tensor)
-
-def tensor_to_midi(tensor, filename):
+    
+def tensor_to_midi(tensor, filename, orig_tpb=384, binary_velocity=False):
     # Create a MIDI file
     mid = mido.MidiFile()
+    mid.ticks_per_beat = orig_tpb
     track = mido.MidiTrack()
     mid.tracks.append(track)
+
     # Convert the tensor into messages
     current_timestep = 0
     for timestep in range(1,tensor.shape[0]):
         for note in range(0,128):
             if tensor[timestep, note] - tensor[timestep - 1, note] != 0:
                 velocity = int(tensor[timestep, note])
+                if binary_velocity:
+                  velocity = velocity * 100
                 msg = mido.Message('note_on', note=note, velocity=velocity, time=timestep-current_timestep)
                 track.append(msg)
                 current_timestep = timestep
+
     # Save the MIDI file
     mid.save(filename)
+    return mid
 
 if __name__ == '__main__':
     from pathlib import Path
