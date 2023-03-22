@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 # In Tonnetz, each node has six neighbours which have pitches of the following distances (in semi-tones)
 # E.g. C4 has neighbours F3, G#3, A3, D#4, E4, G4
@@ -75,7 +76,7 @@ def compress_tensor(tensor, file_name, method, desired_tpb=16):
       compressed_vectors.append((majority_nonzeroes).astype(int))
     else:
       raise KeyError(f"Unknown method {method}")
-  return torch.tensor(compressed_vectors)
+  return torch.tensor(np.array(compressed_vectors))
 
 def reduce_tensor(tensor, start_note, end_note):
   '''
