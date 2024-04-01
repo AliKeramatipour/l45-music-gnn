@@ -1,0 +1,4 @@
+## Abstract
+
+We propose a novel approach to generate music using Tonnetz graph with Graph Neural Networks (GNN). Tonnetz is a lattice graph that shows structural musical information through a mapping (graph edges) of relations between tones. We evaluate several model architectures based on the accuracy of a
+regression task and the quality of generated music. Rather than just considering music as a sequence of sounds, we show that GNNs encapsulate both temporal and structural information to emulate musical patterns when generating music. This helps using an encoder-decoder structure of Graph U-Net to learn musical patterns inspired by Mozart.
